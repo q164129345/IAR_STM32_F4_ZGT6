@@ -123,7 +123,7 @@ int main(void)
     /* USER CODE BEGIN 3 */
     LED1_Toggle;
     //printf("\r\n Hello,World \r\n");
-    delay_ms(200);
+    delay_ms(50);
     HAL_IWDG_Refresh(&hiwdg);  //喂狗
   }
   /* USER CODE END 3 */

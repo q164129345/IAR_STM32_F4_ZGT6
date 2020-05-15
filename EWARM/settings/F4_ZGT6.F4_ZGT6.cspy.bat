@@ -25,7 +25,7 @@ if not "%~1" == "" goto debugFile
 
 @echo on 
 
-"D:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\settings\F4_ZGT6.F4_ZGT6.general.xcl" --backend -f "E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\settings\F4_ZGT6.F4_ZGT6.driver.xcl" 
+"D:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\settings\F4_ZGT6.F4_ZGT6.general.xcl" --backend -f "E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\settings\F4_ZGT6.F4_ZGT6.driver.xcl" 
 
 @echo off 
 goto end 
@@ -34,7 +34,7 @@ goto end
 
 @echo on 
 
-"D:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\settings\F4_ZGT6.F4_ZGT6.general.xcl" "--debug_file=%~1" --backend -f "E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\settings\F4_ZGT6.F4_ZGT6.driver.xcl" 
+"D:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\settings\F4_ZGT6.F4_ZGT6.general.xcl" "--debug_file=%~1" --backend -f "E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\settings\F4_ZGT6.F4_ZGT6.driver.xcl" 
 
 @echo off 
 :end

@@ -1,49 +1,49 @@
 ﻿###############################################################################
 #
-# IAR ELF Linker V8.11.1.13263/W32 for ARM                15/May/2020  17:05:50
+# IAR ELF Linker V8.11.1.13263/W32 for ARM                15/May/2020  17:40:41
 # Copyright 2007-2017 IAR Systems AB.
 #
 #    Output file  =  
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Exe\F4_ZGT6.out
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Exe\F4_ZGT6.out
 #    Map file     =  
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\List\F4_ZGT6.map
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\List\F4_ZGT6.map
 #    Command line =  
-#        -f C:\Users\ADMINI~1\AppData\Local\Temp\EW6B67.tmp
-#        (E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Obj\delay.o
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Obj\dma.o
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Obj\gpio.o
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Obj\iwdg.o
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Obj\main.o
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Obj\spi.o
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Obj\startup_stm32f407xx.o
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Obj\stm32f4xx_hal.o
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_cortex.o
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_dma.o
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_dma_ex.o
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_exti.o
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_flash.o
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_flash_ex.o
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_flash_ramfunc.o
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_gpio.o
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_iwdg.o
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_msp.o
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_pwr.o
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_pwr_ex.o
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_rcc.o
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_rcc_ex.o
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_spi.o
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_tim.o
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_tim_ex.o
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_uart.o
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Obj\stm32f4xx_it.o
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Obj\system_stm32f4xx.o
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Obj\tim.o
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Obj\usart.o -o
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Exe\F4_ZGT6.out
+#        -f C:\Users\ADMINI~1\AppData\Local\Temp\EW51D0.tmp
+#        (E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\delay.o
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\dma.o
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\gpio.o
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\iwdg.o
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\main.o
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\spi.o
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\startup_stm32f407xx.o
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\stm32f4xx_hal.o
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_cortex.o
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_dma.o
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_dma_ex.o
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_exti.o
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_flash.o
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_flash_ex.o
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_flash_ramfunc.o
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_gpio.o
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_iwdg.o
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_msp.o
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_pwr.o
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_pwr_ex.o
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_rcc.o
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_rcc_ex.o
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_spi.o
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_tim.o
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_tim_ex.o
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_uart.o
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\stm32f4xx_it.o
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\system_stm32f4xx.o
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\tim.o
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\usart.o -o
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Exe\F4_ZGT6.out
 #        --map
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\List\F4_ZGT6.map
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\List\F4_ZGT6.map
 #        --config
-#        E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\stm32f407xx_flash.icf
+#        E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\stm32f407xx_flash.icf
 #        --semihosting --entry __iar_program_start --vfe --utf8_text_in
 #        --text_out utf8)
 #
@@ -270,7 +270,7 @@ Copy (__iar_copy_init3)
 
     Module                  ro code  ro data  rw data
     ------                  -------  -------  -------
-E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Obj: [1]
+E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj: [1]
     delay.o                     108                 4
     dma.o                        68
     gpio.o                      292
@@ -483,7 +483,7 @@ uwTickFreq              0x20000020    0x1  Data  Gb  stm32f4xx_hal.o [1]
 uwTickPrio              0x20000000    0x4  Data  Gb  stm32f4xx_hal.o [1]
 
 
-[1] = E:\Code_Workspace\VTS_Scanner_Main_Board\EWARM\F4_ZGT6\Obj
+[1] = E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj
 [2] = command line
 [3] = dl7M_tlf.a
 [4] = rt7M_tl.a
