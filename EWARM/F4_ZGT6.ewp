@@ -342,8 +342,8 @@
           <state>$PROJ_DIR$/../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy</state>
           <state>$PROJ_DIR$/../Drivers/CMSIS/Device/ST/STM32F4xx/Include</state>
           <state>$PROJ_DIR$/../Drivers/CMSIS/Include</state>
-          <state>E:\Code_Workspace\VTS_Scanner_Main_Board\Inc\BSP</state>
-          <state>E:\Code_Workspace\VTS_Scanner_Main_Board\Inc\SYSTEM</state>
+          <state>E:\Code_Workspace\IAR_STM32_F4_ZGT6\Inc\SYSTEM</state>
+          <state>E:\Code_Workspace\IAR_STM32_F4_ZGT6\Inc\BSP</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
@@ -1039,6 +1039,24 @@
       </file>
       <file>
         <name>$PROJ_DIR$\..\Inc\SYSTEM\delay.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\Src\SYSTEM\eeprom.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\Inc\SYSTEM\eeprom.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\Src\SYSTEM\net_reg.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\Inc\SYSTEM\net_reg.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\Src\SYSTEM\shell.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\Inc\SYSTEM\shell.h</name>
       </file>
     </group>
     <group>

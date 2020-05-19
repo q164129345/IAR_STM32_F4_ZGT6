@@ -1,9 +1,12 @@
 ﻿E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\F4_ZGT6.pbd
 E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\delay.pbi
 E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\dma.pbi
+E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\eeprom.pbi
 E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\gpio.pbi
 E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\iwdg.pbi
 E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\main.pbi
+E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\net_reg.pbi
+E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\shell.pbi
 E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\spi.pbi
 E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\stm32f4xx_hal.pbi
 E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM\F4_ZGT6\Obj\stm32f4xx_hal_cortex.pbi

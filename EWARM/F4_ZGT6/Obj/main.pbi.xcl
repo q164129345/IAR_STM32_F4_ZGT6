@@ -12,9 +12,9 @@ E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM/../Drivers/CMSIS/Device/ST/STM32F4xx/I
 -I
 E:\Code_Workspace\IAR_STM32_F4_ZGT6\EWARM/../Drivers/CMSIS/Include
 -I
-E:\Code_Workspace\VTS_Scanner_Main_Board\Inc\BSP
+E:\Code_Workspace\IAR_STM32_F4_ZGT6\Inc\SYSTEM
 -I
-E:\Code_Workspace\VTS_Scanner_Main_Board\Inc\SYSTEM
+E:\Code_Workspace\IAR_STM32_F4_ZGT6\Inc\BSP
 -I
 D:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\arm\inc
 -I
@@ -30,9 +30,9 @@ E:\Code_Workspace\IAR_STM32_F4_ZGT6\Drivers\CMSIS\Device\ST\STM32F4xx\Include
 -I
 E:\Code_Workspace\IAR_STM32_F4_ZGT6\Drivers\CMSIS\Include
 -I
-E:\Code_Workspace\VTS_Scanner_Main_Board\Inc\BSP
+E:\Code_Workspace\IAR_STM32_F4_ZGT6\Inc\SYSTEM
 -I
-E:\Code_Workspace\VTS_Scanner_Main_Board\Inc\SYSTEM
+E:\Code_Workspace\IAR_STM32_F4_ZGT6\Inc\BSP
 -D__CHAR_BITS__=8
 -D__CHAR_MAX__=0xff
 -D__CHAR_MIN__=0

@@ -34,6 +34,9 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "string.h"
+#include "stddef.h"
+#include "shell.h"
+#include "net_reg.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -47,17 +50,48 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-uint8_t number = 0;
+
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+uint8_t aTxMessage[] = "\r\n************* Easy Shell *************\r\n"
+                       "Help Information: \r\n"
+                       "-h    Show the help information \r\n"
+                       "      for example: >>-h \r\n"
+                       "\r\n"
+                       "-i    Set IP address \r\n"
+                       "      for example: >>-i 192.168.178.59 \r\n"
+                       "\r\n"
+                       "-m    Set MAC address  \r\n"
+                       "      for example: >>-m 94:75:CE:2A:13:75 \r\n"
+                       "\r\n"
+                       "-s    Set subnet mask  \r\n"
+                       "      for examlpe: >>-s 255.255.240.0 \r\n"
+                       "\r\n"
+                       "-g    Set Gateway IP address \r\n"
+                       "      for example: >>-g 10.10.10.10 \r\n"
+                       "\r\n"
+                       "-p    Print the network configuration \r\n"
+                       "      for example: >>-p \r\n";
+
+//²âÊÔ´úÂë
+uint8_t hello[] = "USART1 is ready...\r\n";
+//²âÊÔ´úÂë
+uint8_t recv_buf[13] = {0};
+//ÉùÃ÷Íâ²¿±äÁ¿
+extern uint8_t receive_Buff[255];
+
+
+//uint8_t aTxMessage1[] = "1.Getting the detail about network configuration.\r\n";
+//uint8_t aTxMessage2[] = "2.Setting the network configuration. \r\n";
 
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+static void MX_NVIC_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -100,17 +134,23 @@ int main(void)
   MX_USART1_UART_Init();
   MX_SPI1_Init();
   MX_IWDG_Init();
+
+  /* Initialize interrupts */
+  MX_NVIC_Init();
   /* USER CODE BEGIN 2 */
   
-  /* å¯åŠ¨å®šæ—¶å™¨ä¸­æ–­ */
-  HAL_TIM_Base_Start_IT(&htim3);
-  /* åˆå§‹åŒ–å»¶æ—¶ */
+  //¿ªÆô´®¿ÚÖĞ¶Ï½ÓÊÕ
+  //HAL_UART_Receive_IT(&huart1, (uint8_t *)recv_buf, sizeof(recv_buf));
+  //·¢ËÍÌáÊ¾ĞÅÏ¢
+  HAL_UART_Transmit_IT(&huart1, (uint8_t *)aTxMessage, sizeof(aTxMessage));
+  //Ê¹ÄÜ¶¨Ê±Æ÷3ÖĞ¶Ï
+  HAL_TIM_Base_Start_IT(&htim3); 
+  //³õÊ¼»¯ÑÓÊ±¿â
   delay_init(168);
-  /* ä½¿èƒ½ä¸²å£ä¸­æ–­æ¥æ”¶ */
-  HAL_UART_Receive_IT(&huart1, (uint8_t *)recv_buf,13);
-  number = strlen(hello);
-  /* å‘é€æç¤ºä¿¡æ¯ */
-  HAL_UART_Transmit_IT(&huart1, (uint8_t *)hello, number);
+  //Ê¹ÄÜ´®¿Ú¿ÕÏĞÖĞ¶Ï
+  __HAL_UART_ENABLE_IT(&huart1,UART_IT_IDLE);
+  //Á¬½ÓDMA
+  HAL_UART_Receive_DMA(&huart1, (uint8_t *)receive_Buff,255);
   
   /* USER CODE END 2 */
 
@@ -122,9 +162,13 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
     LED1_Toggle;
-    //printf("\r\n Hello,World \r\n");
-    delay_ms(50);
-    HAL_IWDG_Refresh(&hiwdg);  //å–‚ç‹—
+    //show_Shell_Title();
+    //show_W5100_Default_Network_Settings();
+    delay_ms(100);
+    //do_something();
+    
+    //Î¹¹·
+    HAL_IWDG_Refresh(&hiwdg);  
   }
   /* USER CODE END 3 */
 }
@@ -172,15 +216,28 @@ void SystemClock_Config(void)
   }
 }
 
+/**
+  * @brief NVIC Configuration.
+  * @retval None
+  */
+static void MX_NVIC_Init(void)
+{
+  /* USART1_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(USART1_IRQn, 3, 0);
+  HAL_NVIC_EnableIRQ(USART1_IRQn);
+}
+
 /* USER CODE BEGIN 4 */
-/* >>>>>> ä¸²å£ä¸­æ–­å›è°ƒå‡½æ•°*/
+
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef * huart)
 {
+    /* Prevent unused argument(s) compilation warning */
     UNUSED(huart);
-    //å‘é€ä¸­æ–­æ¥æ”¶åˆ°çš„13ä¸ªå­—ç¬¦
-    HAL_UART_Transmit_IT(&huart1,(uint8_t *)recv_buf,13);
-    //ä½¿èƒ½æ¥æ”¶ä¸­æ–­
-    HAL_UART_Receive_IT(&huart1, (uint8_t *)recv_buf,13);
+    /* NOTE: This function should not be modified, when the callback is needed,
+             the HAL_UART_RxCpltCallback could be implemented in the user file
+    */
+    //HAL_UART_Transmit_IT(&huart1,(uint8_t *)recv_buf,13);
+    //HAL_UART_Receive_IT(&huart1, (uint8_t *)recv_buf,13);
 
 }
 

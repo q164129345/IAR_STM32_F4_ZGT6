@@ -1,7 +1,7 @@
 [PreviousGenFiles]
-HeaderPath=E:/Code_Workspace/VTS_Scanner_Main_Board/Inc
+HeaderPath=E:/Code_Workspace/IAR_STM32_F4_ZGT6/Inc
 HeaderFiles=gpio.h;dma.h;iwdg.h;spi.h;tim.h;usart.h;stm32f4xx_it.h;stm32f4xx_hal_conf.h;main.h;
-SourcePath=E:/Code_Workspace/VTS_Scanner_Main_Board/Src
+SourcePath=E:/Code_Workspace/IAR_STM32_F4_ZGT6/Src
 SourceFiles=gpio.c;dma.c;iwdg.c;spi.c;tim.c;usart.c;stm32f4xx_it.c;stm32f4xx_hal_msp.c;main.c;
 
 [PreviousLibFiles]

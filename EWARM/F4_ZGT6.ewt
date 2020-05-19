@@ -1179,6 +1179,24 @@
             <file>
                 <name>$PROJ_DIR$\..\Inc\SYSTEM\delay.h</name>
             </file>
+            <file>
+                <name>$PROJ_DIR$\..\Src\SYSTEM\eeprom.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Inc\SYSTEM\eeprom.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Src\SYSTEM\net_reg.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Inc\SYSTEM\net_reg.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Src\SYSTEM\shell.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Inc\SYSTEM\shell.h</name>
+            </file>
         </group>
         <group>
             <name>User</name>
