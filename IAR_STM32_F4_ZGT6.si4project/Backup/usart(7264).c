@@ -23,8 +23,9 @@
 /* USER CODE BEGIN 0 */
 
 //定义一个接收缓冲区，定义为char类型，为了被C标准库函数strchr调用
-//此缓冲区用于串口空闲中断+DMA实现不定长串口字符串接收
 char receive_Buff[255] = {0};
+
+//定义一个变量，存放串口1过来的指令
 
 /* USER CODE END 0 */
 

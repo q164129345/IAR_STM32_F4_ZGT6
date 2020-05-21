@@ -61,6 +61,7 @@
 extern uint8_t aTxMessage[1024];
 extern int8_t receive_Buff[255];
 //²âÊÔ´úÂë
+char test[] = " adfafaff -h 192.168.178.109";
 
 //char test1[50] = {0};
 //char *ans;

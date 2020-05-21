@@ -48,7 +48,7 @@ static int8_t excute_Command(char const *Command, _STRING_FORMAT_NETWORK_SETTING
 static int8_t Command_Turn_To_Value(char const *Command, _STRING_FORMAT_NETWORK_SETTINGS *string_Network_Setting ,uint8_t *value_Network_Setting);
 
 int HexStr2Integer( char * HexStr );
-
+int8_t* int_To_String(int32_t num, int8_t *str);
 void analyze_User_Command(char const *Command);
 
 

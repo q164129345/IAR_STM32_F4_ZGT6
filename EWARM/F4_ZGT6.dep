@@ -512,6 +512,10 @@
                     <name>__cstat</name>
                     <file> 52</file>
                 </tool>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 43</file>
+                </tool>
             </outputs>
             <inputs>
                 <tool>

@@ -1,6 +1,6 @@
 /*
- * 
- *
+ * 实现简单的shell
+ * 目的是实现能使用串口助手写入网络配置，存到RAM里。
  */
 
 
@@ -47,7 +47,7 @@ char checknumber[30] = {0};
 /*
 function: 
     16进制字符串转十进制整形
-
+    例如串口输入:"90"，那么该函数返回十进制144
 input: 
     char *
     
@@ -99,66 +99,6 @@ int HexStr2Integer( char * HexStr )
     }
     return iFlag*iResult;
 }
-
-
-
-
-/*
-function: 
-    整数转字符串
-
-input: 
-
-    
-output:
-
-    
-note: https://www.runoob.com/w3cnote/c-int2str.html
-*/
-int8_t* int_To_String(int32_t num, int8_t *str)
-{
-    int8_t i = 0;
-    if(num < 0)
-    {
-        num = - num;
-        str[i++] = '-';
-    }
-
-    //杞崲
-    do
-    {
-        str[i++] = num%10+48;
-        num /= 10;
-            
-    }
-    while (num); //num涓嶄负0缁х画寰幆
-
-    str[i] = '\0';
-
-
-    //纭畾寮�濮嬭皟鏁寸殑浣嶇疆
-    int j = 0;
-    if(str[0] == '-')  //濡傛灉鏈夎礋鍙凤紝璐熷彿涓嶇敤璋冩暣
-    {
-        j = 1;
-        ++i;
-    }
-
-    //瀵圭О浜ゆ崲
-    for(;j<i/2;j++)
-    {
-        //瀵圭О浜ゆ崲涓ょ鐨勫�?
-        str[j] =  str[j] + str[i-1-j];
-        str[i-1-j] = str[j] - str[i-1-j];
-        str[j] = str[j] - str[i-1-j];
-    }
-
-    return str;
-
-}
-
-
-
 
 
 /*
@@ -718,6 +658,4 @@ void analyze_User_Command(char const *Command)
         printf("If you need some help , plese type -h");
     }
 }
-
-
 
