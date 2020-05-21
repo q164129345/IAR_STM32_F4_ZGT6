@@ -21,8 +21,9 @@
 #include "usart.h"
 
 /* USER CODE BEGIN 0 */
-//声明外部变量
-uint8_t receive_Buff[255] = {0};
+
+//定义一个接收缓冲区，定义为char类型，为了被C标准库函数strchr调用
+char receive_Buff[255] = {0};
 
 //定义一个变量，存放串口1过来的指令
 
@@ -30,6 +31,7 @@ uint8_t receive_Buff[255] = {0};
 
 UART_HandleTypeDef huart1;
 DMA_HandleTypeDef hdma_usart1_rx;
+DMA_HandleTypeDef hdma_usart1_tx;
 
 /* USART1 init function */
 
@@ -92,7 +94,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
     hdma_usart1_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
     hdma_usart1_rx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
     hdma_usart1_rx.Init.Mode = DMA_CIRCULAR;
-    hdma_usart1_rx.Init.Priority = DMA_PRIORITY_MEDIUM;
+    hdma_usart1_rx.Init.Priority = DMA_PRIORITY_HIGH;
     hdma_usart1_rx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
     if (HAL_DMA_Init(&hdma_usart1_rx) != HAL_OK)
     {
@@ -100,6 +102,24 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
     }
 
     __HAL_LINKDMA(uartHandle,hdmarx,hdma_usart1_rx);
+
+    /* USART1_TX Init */
+    hdma_usart1_tx.Instance = DMA2_Stream7;
+    hdma_usart1_tx.Init.Channel = DMA_CHANNEL_4;
+    hdma_usart1_tx.Init.Direction = DMA_MEMORY_TO_PERIPH;
+    hdma_usart1_tx.Init.PeriphInc = DMA_PINC_DISABLE;
+    hdma_usart1_tx.Init.MemInc = DMA_MINC_ENABLE;
+    hdma_usart1_tx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+    hdma_usart1_tx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+    hdma_usart1_tx.Init.Mode = DMA_NORMAL;
+    hdma_usart1_tx.Init.Priority = DMA_PRIORITY_MEDIUM;
+    hdma_usart1_tx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+    if (HAL_DMA_Init(&hdma_usart1_tx) != HAL_OK)
+    {
+      Error_Handler();
+    }
+
+    __HAL_LINKDMA(uartHandle,hdmatx,hdma_usart1_tx);
 
   /* USER CODE BEGIN USART1_MspInit 1 */
     
@@ -126,6 +146,7 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 
     /* USART1 DMA DeInit */
     HAL_DMA_DeInit(uartHandle->hdmarx);
+    HAL_DMA_DeInit(uartHandle->hdmatx);
 
     /* USART1 interrupt Deinit */
     HAL_NVIC_DisableIRQ(USART1_IRQn);
@@ -173,21 +194,25 @@ void USAR_UART_IDLECallback(UART_HandleTypeDef *huart)
 {
     //停止本次DMA传输
     HAL_UART_DMAStop(&huart1);
-
     //计算接收到的数据长度
     uint8_t data_length = BUFFER_SIZE - __HAL_DMA_GET_COUNTER(&hdma_usart1_rx);
-
     //测试函数：将接收到的数据打印出去,后续可以取消！！！！！！
     printf("Receive Data(length = %d):",data_length);
-    HAL_UART_Transmit(&huart1,receive_Buff,data_length,0x200);
+    HAL_UART_Transmit(&huart1,(uint8_t *)receive_Buff,data_length,0x200);
     //打印回车换行
     printf("\r\n");
+
+
+
+    //解析命令
+    analyze_User_Command(receive_Buff);
+
+
 
     //清零接收缓冲区
     memset(receive_Buff,0,data_length);
     //清零长度
     data_length = 0;
-    
     //重启开始DMA传输 每次255字节数据
     HAL_UART_Receive_DMA(&huart1, (uint8_t *)receive_Buff,255);
 }

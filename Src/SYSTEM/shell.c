@@ -1,45 +1,119 @@
 /*
- * ç”¨äºä¸ä¸²å£åŠ©æ‰‹äº¤äº’
+ * 
  *
  */
 
 
 #include "shell.h"
 
+//ÉùÃ÷Íâ²¿±äÁ¿
+extern uint8_t w5100_Network_Settings[];
+
+uint8_t aTxMessage[1024] =  "\r\n                                      \r\n"
+                            "\r\n************* Easy Shell *************\r\n"
+                            "Command List: \r\n"
+                            "-h    Show the help information \r\n"
+                            "      for example: >>-h \r\n"
+                            "\r\n"
+                            "-i    Set IP address \r\n"
+                            "      for example: >>-i 192.168.178.59 \r\n"
+                            "\r\n"
+                            "-m    Set MAC address  \r\n"
+                            "      for example: >>-m 94:75:CE:2A:13:75 \r\n"
+                            "\r\n"
+                            "-s    Set subnet mask  \r\n"
+                            "      for examlpe: >>-s 255.255.240.0 \r\n"
+                            "\r\n"
+                            "-g    Set Gateway IP address \r\n"
+                            "      for example: >>-g 10.10.10.10 \r\n"
+                            "\r\n"
+                            "-p    Print the network configuration \r\n"
+                            "      for example: >>-p \r\n"
+                            "\r\n"
+                            "-w    Write the network configuration to EEPROM \r\n"
+                            "      for example: >>-w \r\n";
+
+
 extern uint8_t w5100_Default_Network_Settings[];
-/* å®šä¹‰ä¸€ä¸ªç»“æ„ä½“ä»¥â€œå­—ç¬¦ä¸²â€çš„å½¢å¼å­˜å‚¨ç½‘ç»œè®¾ç½® */
-_FORMAT_NETWORK_SETTINGS buffer_For_Setting;
-/* å®šä¹‰ä¸€ä¸ªç»“æ„ä½“æŒ‡é’ˆ */
-_FORMAT_NETWORK_SETTINGS *p_buffer_For_Setting = &buffer_For_Setting;
+//¶¨ÒåÒ»¸ö½á¹¹Ìå
+_STRING_FORMAT_NETWORK_SETTINGS string_Buffer_For_Network_Setting;
+//¶¨ÒåÒ»¸ö½á¹¹ÌåÖ¸Õë
+_STRING_FORMAT_NETWORK_SETTINGS *p_string_Buffer_For_Network_Setting = &string_Buffer_For_Network_Setting;
 
-int32_t number = 250;
-int8_t string[3] = {0};
-
-/* æç¤ºå¸®åŠ©ä¿¡æ¯ */
-uint8_t title_Of_Shell[] = "\r\n************* Easy shell *************\r\n"
-                           "Help Information: \r\n"
-                           "-g    Get the detail about network configuration. \r\n"
-                           "-i    Set the network configuration. \r\n";
+//ÓÃÓÚ²é¿´Ä³Ğ©Öµ
+char checknumber[30] = {0};
 
 
+/*
+function: 
+    16½øÖÆ×Ö·û´®×ªÊ®½øÖÆÕûĞÎ
 
+input: 
+    char *
+    
+output:
+    int
+    
+note: https://typecodes.com/cseries/simplifychexstrtoint.htmll
+*/
+int HexStr2Integer( char * HexStr )
+{
+    int iResult = 0, iFlag = 1;
 
+    //ÅĞ¶Ï×Ö·û´®ÊÇ·ñºÏ·¨
+    if( NULL == HexStr || ( *HexStr == '+' && *(HexStr+1) == '\0' ) || ( *HexStr == '-' && *(HexStr+1) == '\0' ) 
+        || ( *HexStr == 0x30 && *(HexStr+1) == 0x58 && *(HexStr+2) == '\0' )
+        || ( *HexStr == 0x30 && *(HexStr+1) == 0x78 && *(HexStr+2) == '\0' ) )
+    {
+        return -1;
+    }
+
+    //Ö¸Õë±äÁ¿pÖ¸Ïò×Ö·û´®µÄÊ×Î»
+    char * p = HexStr;
+
+    //¶ÔÒÔ"+"¡¢"-"ºÅ¿ªÍ·µÄÊ®Áù½øÖÆ×Ö·û´®µÄ´¦Àí
+    if ( '-' == *p || '+' == *p )
+    {
+        if( *p == '-' )
+            iFlag = -1;
+        ++p;
+    }
+    //¶Ô"0x"»òÕß"0X"¿ªÍ·µÄÊ®Áù½øÖÆ×Ö·ûµÄ´¦Àí
+    else if( ( *p == 0x30 && *(p+1) == 0x58 ) || ( *p == 0x30 && *(p+1) == 0x78 ) )
+    {
+        p += 2;
+    }
+
+    while( *p != '\0' )
+    {
+        if ( *p >= 48 && *p <= 57 )
+            iResult = ( *p - 48 )+ ( iResult<<4 );
+        else if ( *p >= 65 && *p <= 70 )
+            iResult = ( *p - 65 + 10 )+ ( iResult<<4 );
+        else if ( *p >= 97 && *p <= 102 )
+            iResult = ( *p - 97 + 10 )+ ( iResult<<4 );
+        else
+            return -2;
+
+        ++p;
+    }
+    return iFlag*iResult;
+}
 
 
 
 
 /*
 function: 
-    æ•´æ•°è½¬å­—ç¬¦ä¸²
+    ÕûÊı×ª×Ö·û´®
 
 input: 
-    å…¥å£å‚æ•°1    32ä½æœ‰ç¬¦å·æ•´æ•°
-    å…¥å£å‚æ•°2    8ä½æœ‰ç¬¦å·å­—ç¬¦ä¸²çš„é¦–åœ°å€
+
     
 output:
-    å…¥å£å‚æ•°2çš„8ä½æœ‰ç¬¦å·å­—ç¬¦ä¸²çš„é¦–åœ°å€
+
     
-note: å‚è€ƒç½‘å€ï¼šhttps://www.runoob.com/w3cnote/c-int2str.html
+note: https://www.runoob.com/w3cnote/c-int2str.html
 */
 int8_t* int_To_String(int32_t num, int8_t *str)
 {
@@ -73,7 +147,7 @@ int8_t* int_To_String(int32_t num, int8_t *str)
     //å¯¹ç§°äº¤æ¢
     for(;j<i/2;j++)
     {
-        //å¯¹ç§°äº¤æ¢ä¸¤ç«¯çš„å€¼
+        //å¯¹ç§°äº¤æ¢ä¸¤ç«¯çš„å€?
         str[j] =  str[j] + str[i-1-j];
         str[i-1-j] = str[j] - str[i-1-j];
         str[j] = str[j] - str[i-1-j];
@@ -85,9 +159,11 @@ int8_t* int_To_String(int32_t num, int8_t *str)
 
 
 
+
+
 /*
 function: 
-    å‘é€æç¤ºå¸®åŠ©ä¿¡æ¯åˆ°ä¸²å£
+    
 
 input: 
     
@@ -95,77 +171,553 @@ output:
     
 note: 
 */
-
-void show_Shell_Title(void)
+static void show_W5100_Default_Network_Settings(void)
 {
-    //é€šè¿‡DMAå‘é€
-    HAL_UART_Transmit_DMA(&huart1, (uint8_t *)title_Of_Shell,sizeof(title_Of_Shell));
+  //´òÓ¡ÒÑ¾­½ÓÊÕµ½µÄIP Address
+  printf("\r\n IP Address: %d.%d.%d.%d",w5100_Network_Settings[14],
+                                        w5100_Network_Settings[15],
+                                        w5100_Network_Settings[16],
+                                        w5100_Network_Settings[17]);
+  //´òÓ¡ÒÑ¾­½ÓÊÕµ½µÄSubnet mask
+  printf("\r\n Subnet mask: %d.%d.%d.%d",w5100_Network_Settings[4],
+                                         w5100_Network_Settings[5],
+                                         w5100_Network_Settings[6],
+                                         w5100_Network_Settings[7]);
+  //´òÓ¡ÒÑ¾­½ÓÊÕµ½µÄGateway IP Address
+  printf("\r\n Gateway IP Address: %d.%d.%d.%d",w5100_Network_Settings[0],
+                                                w5100_Network_Settings[1],
+                                                w5100_Network_Settings[2],
+                                                w5100_Network_Settings[3]);
+  //´òÓ¡ÒÑ¾­½ÓÊÕµ½µÄMAC Address
+  printf("\r\n MAC Address: %X:%X:%X:%X:%X:%X",w5100_Network_Settings[8],
+                                               w5100_Network_Settings[9],
+                                               w5100_Network_Settings[10],
+                                               w5100_Network_Settings[11],
+                                               w5100_Network_Settings[12],
+                                               w5100_Network_Settings[13]);
+  printf("\r\n The above is the network configuration you entered.");
+  printf("\r\n If you need to write to EEPROM , please type -w!");
+  
 }
-
-
-
-/*
-function: 
-    å‘é€ç½‘ç»œä¿¡æ¯åˆ°ä¸²å£
-
-input: 
-    
-output:
-    
-note: 
-*/
-void show_W5100_Default_Network_Settings(void)
-{
-  HAL_UART_Transmit_DMA(&huart1, (uint8_t *)w5100_Default_Network_Settings, W5100_NETWORK_SETTING_SIZE);
-}
-
-
 
 
 /*
 funtion:
-   å°†ç½‘ç»œé…ç½®ä»¥å­—ç¬¦ä¸²çš„å½¢å¼å‘é€è‡³ä¸²å£
+        
+   
+input: 
+        
 
+output:
+        1£º×ª»»³É¹¦
+        0: ×ª»»Ê§°Ü
+
+
+note: 
 */
-void do_something(void)
+static int8_t Command_Turn_To_Value(char const *Command, _STRING_FORMAT_NETWORK_SETTINGS *string_Network_Setting ,uint8_t *value_Network_Setting)
 {
-    /* è½¬æ¢Gateway IP */
-    int_To_String(w5100_Default_Network_Settings[0],p_buffer_For_Setting->gate_Way_1);
-    int_To_String(w5100_Default_Network_Settings[1],p_buffer_For_Setting->gate_Way_2);
-    int_To_String(w5100_Default_Network_Settings[2],p_buffer_For_Setting->gate_Way_3);
-    int_To_String(w5100_Default_Network_Settings[3],p_buffer_For_Setting->gate_Way_4);
-
-    /* è½¬æ¢Subnet Mask */
-    int_To_String(w5100_Default_Network_Settings[4],p_buffer_For_Setting->subnet_Mask_1);
-    int_To_String(w5100_Default_Network_Settings[5],p_buffer_For_Setting->subnet_Mask_2);
-    int_To_String(w5100_Default_Network_Settings[6],p_buffer_For_Setting->subnet_Mask_3);
-    int_To_String(w5100_Default_Network_Settings[7],p_buffer_For_Setting->subnet_Mask_4);
-
-    /* è½¬æ¢MAC Address */
-    int_To_String(w5100_Default_Network_Settings[8],p_buffer_For_Setting->MAC_Address_1);
-    int_To_String(w5100_Default_Network_Settings[9],p_buffer_For_Setting->MAC_Address_2);
-    int_To_String(w5100_Default_Network_Settings[10],p_buffer_For_Setting->MAC_Address_3);
-    int_To_String(w5100_Default_Network_Settings[11],p_buffer_For_Setting->MAC_Address_4);
-    int_To_String(w5100_Default_Network_Settings[12],p_buffer_For_Setting->MAC_Address_5);
-    int_To_String(w5100_Default_Network_Settings[13],p_buffer_For_Setting->MAC_Address_6);
-
-    /* è½¬æ¢IP Address */
-    int_To_String(w5100_Default_Network_Settings[14],p_buffer_For_Setting->ip_Address_1);
-    int_To_String(w5100_Default_Network_Settings[15],p_buffer_For_Setting->ip_Address_2);
-    int_To_String(w5100_Default_Network_Settings[16],p_buffer_For_Setting->ip_Address_3);
-    int_To_String(w5100_Default_Network_Settings[17],p_buffer_For_Setting->ip_Address_4);
-
-
-    /* æ‰“å°å‡ºæ¥ */
-    printf("\r\n Gateway: %s.%s.%s.%s \r\n", p_buffer_For_Setting->gate_Way_1,p_buffer_For_Setting->gate_Way_2,p_buffer_For_Setting->gate_Way_3,p_buffer_For_Setting->gate_Way_4);
-    printf("\r\n Subnet Mask: %s.%s.%s.%s \r\n",p_buffer_For_Setting->subnet_Mask_1,p_buffer_For_Setting->subnet_Mask_2,p_buffer_For_Setting->subnet_Mask_3,p_buffer_For_Setting->subnet_Mask_4);
-    printf("\r\n Mack address: %s.%s.%s.%s.%s.%s \r\n",p_buffer_For_Setting->MAC_Address_1,p_buffer_For_Setting->MAC_Address_2,p_buffer_For_Setting->MAC_Address_3,p_buffer_For_Setting->MAC_Address_4,p_buffer_For_Setting->MAC_Address_5,p_buffer_For_Setting->MAC_Address_6);
-    printf("\r\n Ip address: %s.%s.%s.%s \r\n",p_buffer_For_Setting->ip_Address_1,p_buffer_For_Setting->ip_Address_2,p_buffer_For_Setting->ip_Address_3,p_buffer_For_Setting->ip_Address_4);
-
+    
+    //ÏÈÅĞ¶ÏÒ»ÏÂÃüÁîÊÇ·ñÕıÈ·£¬ÕıÈ·µÄ»°£¬½øÈë×ª»»
+    if(Command[1] == 'i' || Command[1] == 's' || Command[1] == 'g' || Command[1] == 'm')
+    {
+        int32_t buffer[6] = {0};
+        switch (Command[1])
+        {
+            //ÃüÁîi£¬×ª»»IP Address
+            case 'i':
+                    //½«×Ö·û´®×ªÎªÕûĞÎ
+                    //²âÊÔ¹ıÒ»×éÊı¾İ
+                    //´®¿ÚÊäÈë:-i 192.168.178.100
+                    //value_Network_SettingµÄÖµÎª: 192 168 178 100
+                    buffer[0] = atoi(string_Network_Setting->part1_IP_Address);
+                    buffer[1] = atoi(string_Network_Setting->part2_IP_Address);
+                    buffer[2] = atoi(string_Network_Setting->part3_IP_Address);
+                    buffer[3] = atoi(string_Network_Setting->part4_IP_Address);
+                    //ÀàĞÍ×ª»»
+                    value_Network_Setting[14] = (uint8_t)buffer[0];
+                    value_Network_Setting[15] = (uint8_t)buffer[1];
+                    value_Network_Setting[16] = (uint8_t)buffer[2];
+                    value_Network_Setting[17] = (uint8_t)buffer[3];
+                break;
+            //ÃüÁîs, ×ª»»Subnet MACK
+            case 's':
+                    //½«×Ö·û´®×ªÎªÕûĞÎ
+                    buffer[0] = atoi(string_Network_Setting->part1_Subnet_Mask);
+                    buffer[1] = atoi(string_Network_Setting->part2_Subnet_Mask);
+                    buffer[2] = atoi(string_Network_Setting->part3_Subnet_Mask);
+                    buffer[3] = atoi(string_Network_Setting->part4_Subnet_Mask);
+                    //ÀàĞÍ×ª»»
+                    value_Network_Setting[4] = (uint8_t)buffer[0];
+                    value_Network_Setting[5] = (uint8_t)buffer[1];
+                    value_Network_Setting[6] = (uint8_t)buffer[2];
+                    value_Network_Setting[7] = (uint8_t)buffer[3]; 
+                break;
+            //ÃüÁîg£¬×ª»»Gateway 
+            case 'g':
+                    //½«×Ö·û´®×ªÎªÕûĞÎ
+                    buffer[0] = atoi(string_Network_Setting->part1_Gateway);
+                    buffer[1] = atoi(string_Network_Setting->part2_Gateway);
+                    buffer[2] = atoi(string_Network_Setting->part3_Gateway);
+                    buffer[3] = atoi(string_Network_Setting->part4_Gateway);
+                    //ÀàĞÍ×ª»»
+                    value_Network_Setting[0] = (uint8_t)buffer[0];
+                    value_Network_Setting[1] = (uint8_t)buffer[1];
+                    value_Network_Setting[2] = (uint8_t)buffer[2];
+                    value_Network_Setting[3] = (uint8_t)buffer[3];  
+                break;
+            //ÃüÁîm£¬×ª»»MAC Address
+            case 'm':
+                    //½«Ê®Áù½øÖÆ×Ö·û´®×ª»»ÎªÕûĞÎ
+                    //²âÊÔ¹ıÒ»×éÊı¾İ:
+                    //´®¿ÚÖúÊÖÊäÈë:-m 94:54:CE:2A:13:75
+                    //value_Network_SettingµÄÖµ¶ÔÓ¦ÊÇ: 148 84 206 42 19 117
+                    buffer[0] = HexStr2Integer(string_Network_Setting->part1_MAC_Address);
+                    buffer[1] = HexStr2Integer(string_Network_Setting->part2_MAC_Address);
+                    buffer[2] = HexStr2Integer(string_Network_Setting->part3_MAC_Address);
+                    buffer[3] = HexStr2Integer(string_Network_Setting->part4_MAC_Address);
+                    buffer[4] = HexStr2Integer(string_Network_Setting->part5_MAC_Address);
+                    buffer[5] = HexStr2Integer(string_Network_Setting->part6_MAC_Address);
+                    //ÀàĞÍ×ª»»
+                    value_Network_Setting[8] = (uint8_t)buffer[0];
+                    value_Network_Setting[9] = (uint8_t)buffer[1];
+                    value_Network_Setting[10] = (uint8_t)buffer[2];
+                    value_Network_Setting[11] = (uint8_t)buffer[3];
+                    value_Network_Setting[12] = (uint8_t)buffer[4];
+                    value_Network_Setting[13] = (uint8_t)buffer[5];   
+                break;
+        }
+        return 1;
+    }
+    //²»ÕıÈ·µÄ»°£¬·µ»Ø×ª»»Ê§°Ü
+    else
+    {
+        return 0;
+    }
 }
 
 
+/*
+funtion:
+    ½âÎö´®¿Ú·¢ËÍ¹ıÀ´µÄÃüÁî,²¢½«ÃüÁî²ğÉ¢ËÄ²¿·Ö£¬´æ·Åµ½_STRING_FORMAT_NETWORK_SETTINGS½á¹¹Ìå
+    Õâ¸öº¯ÊıÖ»ÄÜÓÃÓÚÖ´ĞĞ-i -s -g -mÕâËÄ¸öÃüÁî
+   
+input: 
+    Èë¿Ú²ÎÊı1: _STRING_FORMAT_NETWORK_SETTINGS½á¹¹Ìå
 
+output:
+    1 Ö´ĞĞ³É¹¦
+    0 Ö´ĞĞÊ§°Ü
+
+note: ²»Ê¹ÓÃint8_t£¬ÊÇÒòÎªstrcpyµÈC¹Ù·½¿â´¦Àíint8_t»á¾¯¸æ
+      ²éÁËstm32±äÁ¿ÀàĞÍ£¬int8_tÊµ¼ÊÊÇtypedef signed charÀàĞÍ£¬¼´charÀàĞÍ
+*/
+static int8_t excute_Command(char const *Command, _STRING_FORMAT_NETWORK_SETTINGS *network_Setting)
+{
+    //ÊÇ-i,-s,-gÃüÁî
+    if(Command[1] == 'i' || Command[1] == 'g' || Command[1] == 's')
+    {
+        
+        //¶¨Òå·Ö¸î·ûºÅ
+        //IP_AddressÓëSubnet MaskÓëGateway IPÊÇÒÔ'.'×÷Îª·Ö¸ô·û
+        char const s[2] = ".";
+        //¶¨ÒåÒ»¸öÖ¸Õë£¬Ö¸Ïò±»·Ö¸îµÄÎ»ÖÃ
+        char *token;
+        //¶¨ÒåÒ»¸öÊı×é
+        char new_Command[20] = {0};
+        //¶¨ÒåËÄ¸öÊı×é£¬´æ·Å½«±»²ğÉ¢ºóµÄËÄ¸ö²¿·Ö
+        char buf_Part1[4] = {0};
+        char buf_Part2[4] = {0};
+        char buf_Part3[4] = {0};
+        char buf_Part4[4] = {0};
+
+        /*
+         *CommandµÄÄÚÈİÈç:"-i 192.168.178.100"
+         *                "-g 10.10.10.10"
+         *                "-s 255.255.240.0"
+         *new_CommandµÄÄÚÈİÈç: "192.168.178.100"
+         *                     "10.10.10.10"
+         *                     "255.255.240.0"
+         *     
+         *Êµ¼ÊÉÏ£¬ÒÔÏÂÕâ¶Î´úÂëµÄÄ¿µÄÊÇ£º
+         *1.½«ÃüÁî²ğ·Ö³ÉËÄ¸ö¿é
+         *2.ÔÚ²ğ¿éµÄÊ±ºò£¬Ò²¼ì²éÁË¸ñÊ½ÊÇ·ñÕıÈ·¡££¨±ÈÈçIP Address²»¿ÉÄÜ±»²ğ³ÉÎå¿é,¡°-i 192.168.178.22.10¡±ÕâÑùµÄÃüÁîÊÇ´íÎóµÄ¡£
+         */
+
+        //ÅĞ¶Ï
+        //-iºóÒ»Î»ÊÇ·ñÎª'¿Õ¸ñ'
+        if(Command[2] == ' ') 
+        {
+            //¿³µô-i+¿Õ¸ñ£¬ÌáÈ¡IP Address£¬ÀıÈç"192.168.178.100".
+            //Ê¹ÓÃstrncpy¸´ÖÆ19Î»×Ö·û´®£¬±£Ö¤µÚ20Î»ÊÇ'\0'
+            strncpy(new_Command,Command +3,19);
+            //¸´ÖÆ¸øÈ«¾Ö±äÁ¿£¬Ò×ÓÚ¹Û²ì
+            strncpy(checknumber,new_Command,19);
+
+            //»ñÈ¡µÚÒ»²¿·ÖµÄ×Ö·û´®
+            token = strtok(new_Command,s);
+            if(token != NULL)
+            {
+               //ÌáÈ¡µÚÒ»²¿·Ö×Ö·û´®µÄÇ°ÈıÎ»
+               //ÒòÎªÃ¿Ò»²¿·Ö¶¼²»ÄÜ³¬¹ıÈıÎ»Êı
+               strncpy(buf_Part1,token,3);
+            }
+            else //ÕÒ²»µ½µÚÒ»²¿·Ö×Ö·û´®
+            {   
+               return 0;
+            }
+            
+            //»ñÈ¡µÚ¶ş²¿·ÖµÄ×Ö·û´®
+            token = strtok(NULL,s);
+            if(token != NULL) 
+            {
+               //ÌáÈ¡µÚ¶ş²¿·Ö×Ö·û´®µÄÇ°ÈıÎ»
+               //ÒòÎªÃ¿Ò»²¿·Ö¶¼²»ÄÜ³¬¹ıÈıÎ»Êı
+               strncpy(buf_Part2,token,3);
+            }
+            else //ÕÒ²»µ½µÚ¶ş²¿·Ö×Ö·û´®
+            {
+               return 0;
+            }
+            
+            //»ñÈ¡µÚÈı²¿·ÖµÄ×Ö·û´®
+            token = strtok(NULL,s);
+            if(token != NULL) 
+            {
+               //ÌáÈ¡µÚÈı²¿·Ö×Ö·û´®µÄÇ°ÈıÎ»
+               //ÒòÎªÃ¿Ò»²¿·Ö¶¼²»ÄÜ³¬¹ıÈıÎ»Êı
+               strncpy(buf_Part3,token,3);
+            }
+            else //ÕÒ²»µ½µÚÈı²¿·Ö×Ö·û´®
+            {
+               return 0;
+            }
+            
+            //»ñÈ¡µÚËÄ²¿·ÖµÄ×Ö·û´®
+            token = strtok(NULL,s);
+            if(token != NULL) 
+            {
+               //ÌáÈ¡µÚËÄ²¿·Ö×Ö·û´®µÄÇ°ÈıÎ»
+               //ÒòÎªÃ¿Ò»²¿·Ö¶¼²»ÄÜ³¬¹ıÈıÎ»Êı
+               strncpy(buf_Part4,token,3);
+            }
+            else //ÕÒ²»µ½µÚËÄ²¿·Ö×Ö·û´®
+            {
+               return 0;
+            }
+            
+            //»ñÈ¡µÚÎå²¿·ÖµÄ×Ö·û´®
+            token = strtok(NULL,s);
+            //°´ÕÕÃüÁîµÄ¸ñÊ½£¬²»Ó¦¸ÃÓĞµÚÎå²¿·Ö¡£
+            if(token != NULL) return 0;
+        }
+        //Ã»ÓĞÕÒµ½¿Õ¸ñµÄ»°
+        else
+        {
+            return 0;
+        }
+        
+
+       /*
+        * ²ğÉ¢µÄËÄ¸ö²¿·Ö£¬½øĞĞÓï·¨¼ì²é
+        *
+        */
+       //»ñÈ¡Ã¿Ò»²¿·ÖµÄ×Ö·û´®³¤¶È.
+       int8_t length[4] = {0};
+       length[0] = strlen(buf_Part1);
+       length[1] = strlen(buf_Part2);
+       length[2] = strlen(buf_Part3);
+       length[3] = strlen(buf_Part4);
+
+       //×Ö·û´®µÄ³¤¶È = ºÏ·¨×Ö·û´®µÄ³¤¶È£¬Ö¤Ã÷Óï·¨Ã»ÓĞÎÊÌâ
+       //IP Address,Subnet,GatwayÏŞ¶¨ÔÚ"1234567890"
+       if(length[0] == strspn(buf_Part1,"1234567890") &&
+          length[1] == strspn(buf_Part2,"1234567890") &&
+          length[2] == strspn(buf_Part3,"1234567890") &&
+          length[3] == strspn(buf_Part4,"1234567890"))
+       //Óï·¨ÕıÈ·£¬ÃüÁî´æ·Åµ½½á¹¹ÌåÀï
+       {
+         //¸ù¾İÃüÁî£¬´æ·Åµ½¶ÔÓ¦µÄÎ»ÖÃ
+         switch (Command[1])
+          {
+            //-iÃüÁî
+            case 'i':
+                    memcpy(network_Setting->part1_IP_Address,buf_Part1,4);
+                    memcpy(network_Setting->part2_IP_Address,buf_Part2,4);
+                    memcpy(network_Setting->part3_IP_Address,buf_Part3,4);
+                    memcpy(network_Setting->part4_IP_Address,buf_Part4,4);
+                    break;
+            //-sÃüÁî
+            case 's':
+                    memcpy(network_Setting->part1_Subnet_Mask,buf_Part1,4);
+                    memcpy(network_Setting->part2_Subnet_Mask,buf_Part2,4);
+                    memcpy(network_Setting->part3_Subnet_Mask,buf_Part3,4);
+                    memcpy(network_Setting->part4_Subnet_Mask,buf_Part4,4);
+                    break;
+            //-gÃüÁî
+            case 'g':
+                    memcpy(network_Setting->part1_Gateway,buf_Part1,4);
+                    memcpy(network_Setting->part2_Gateway,buf_Part2,4);
+                    memcpy(network_Setting->part3_Gateway,buf_Part3,4);
+                    memcpy(network_Setting->part4_Gateway,buf_Part4,4);
+                    break;
+          }
+          return 1;
+       }
+       //Óï·¨ÓĞÎÊÌâ£¬Ö´ĞĞÊ§°Ü
+       else
+       {
+          return 0;
+       }
+    }
+
+    
+    //ÊÇ-mÃüÁî
+    if(Command[1] == 'm')
+    {      
+        //¶¨Òå·Ö¸î·ûºÅ
+        //IP_AddressÓëSubnet MaskÓëGateway IPÊÇÒÔ'.'×÷Îª·Ö¸ô·û
+        char const s[2] = ":";
+        //¶¨ÒåÒ»¸öÖ¸Õë£¬Ö¸Ïò±»·Ö¸îµÄÎ»ÖÃ
+        char *token;
+        //¶¨ÒåÒ»¸öÊı×é
+        char new_Command[30] = {0};
+        //¶¨ÒåÁù¸öÊı×é£¬´æ·Å±»²ğÉ¢ºóµÄÁù¸ö²¿·Ö
+        char buf_Part1[3] = {0};
+        char buf_Part2[3] = {0};
+        char buf_Part3[3] = {0};
+        char buf_Part4[3] = {0};
+        char buf_Part5[3] = {0};
+        char buf_Part6[3] = {0};
+
+        //CommandµÄÄÚÈİÈç:"-m CF:D9:F4:AA:D1:7A"
+
+        //new_CommandµÄÄÚÈİÈç: "CF:D9:F4:AA:D1:7A",¼´È¥µôÁË-mÓë'¿Õ¸ñ'
+
+        /*
+         *CommandµÄÄÚÈİÈç:"-m CF:D9:F4:AA:D1:7A"
+         *new_CommandµÄÄÚÈİÈç: "CF:D9:F4:AA:D1:7A",¼´È¥µôÁË-mÓë'¿Õ¸ñ'
+ 
+         *     
+         *Êµ¼ÊÉÏ£¬ÒÔÏÂÕâ¶Î´úÂëµÄÄ¿µÄÊÇ£º
+         *1.½«ÃüÁî²ğ·Ö³ÉÁù¸ö¿é
+         *2.ÔÚ²ğ¿éµÄÊ±ºò£¬Ò²¼ì²éÁË¸ñÊ½ÊÇ·ñÕıÈ·¡££¨±ÈÈçMAC Address²»¿ÉÄÜ±»²ğ³ÉÆß¸ö¿é,Ò²²»¿ÉÄÜÉÙÓÚÁù¸ö¿é)
+         */
+
+        //ÅĞ¶Ï
+        //-mºóÒ»Î»ÊÇ·ñÎª'¿Õ¸ñ'
+        if(Command[2] == ' ')
+        {
+            //¿³µô-i+¿Õ¸ñ£¬ÌáÈ¡IP Address£¬ÀıÈç"192.168.178.100".
+            //Ê¹ÓÃstrncpy¸´ÖÆ29Î»×Ö·û´®£¬±£Ö¤µÚ30Î»ÊÇ'\0'
+            strncpy(new_Command,Command +3,29);
+            //¸´ÖÆ¸øÈ«¾Ö±äÁ¿£¬Ò×ÓÚ¹Û²ì
+            memcpy(checknumber,new_Command,29);
+
+            //»ñÈ¡µÚÒ»²¿·ÖµÄ×Ö·û´®
+            token = strtok(new_Command,s);
+            if(token != NULL)
+            {
+               //ÌáÈ¡µÚÒ»²¿·Ö×Ö·û´®µÄÇ°¶şÎ»
+               //ÒòÎªÃ¿Ò»²¿·Ö¶¼²»ÄÜ³¬¹ı¶şÎ»Êı
+               strncpy(buf_Part1,token,2);
+            }
+            else //ÕÒ²»µ½µÚÒ»²¿·Ö×Ö·û´®
+            {   
+               return 0;
+            }
+
+            //»ñÈ¡µÚ¶ş²¿·ÖµÄ×Ö·û´®
+            token = strtok(NULL,s);
+            if(token != NULL) 
+            {
+               //ÌáÈ¡µÚ¶ş²¿·Ö×Ö·û´®µÄÇ°Á½Î»
+               //ÒòÎªÃ¿Ò»²¿·Ö¶¼²»ÄÜ³¬¹ı¶şÎ»Êı
+               strncpy(buf_Part2,token,2);
+            }
+            else //ÕÒ²»µ½µÚ¶ş²¿·Ö×Ö·û´®
+            {
+               return 0;
+            }
+
+            //»ñÈ¡µÚÈı²¿·ÖµÄ×Ö·û´®
+            token = strtok(NULL,s);
+            if(token != NULL) 
+            {
+               //ÌáÈ¡µÚÈı²¿·Ö×Ö·û´®µÄÇ°Á½Î»
+               //ÒòÎªÃ¿Ò»²¿·Ö¶¼²»ÄÜ³¬¹ı¶şÎ»Êı
+               strncpy(buf_Part3,token,2);
+            }
+            else //ÕÒ²»µ½µÚÈı²¿·Ö×Ö·û´®
+            {
+               return 0;
+            }
+
+            //»ñÈ¡µÚËÄ²¿·ÖµÄ×Ö·û´®
+            token = strtok(NULL,s);
+            if(token != NULL) 
+            {
+               //ÌáÈ¡µÚËÄ²¿·Ö×Ö·û´®µÄÇ°Á½Î»
+               //ÒòÎªÃ¿Ò»²¿·Ö¶¼²»ÄÜ³¬¹ı¶şÎ»Êı
+               strncpy(buf_Part4,token,2);
+            }
+            else //ÕÒ²»µ½µÚËÄ²¿·Ö×Ö·û´®
+            {
+               return 0;
+            }
+
+            //»ñÈ¡µÚÎå²¿·ÖµÄ×Ö·û´®
+            token = strtok(NULL,s);
+            if(token != NULL) 
+            {
+               //ÌáÈ¡µÚÎå²¿·Ö×Ö·û´®µÄÇ°Á½Î»
+               //ÒòÎªÃ¿Ò»²¿·Ö¶¼²»ÄÜ³¬¹ı¶şÎ»Êı
+               strncpy(buf_Part5,token,2);
+            }
+            else //ÕÒ²»µ½µÚÎå²¿·Ö×Ö·û´®
+            {
+               return 0;
+            }
+
+            //»ñÈ¡µÚÁù²¿·ÖµÄ×Ö·û´®
+            token = strtok(NULL,s);
+            if(token != NULL) 
+            {
+               //ÌáÈ¡µÚÁù²¿·Ö×Ö·û´®µÄÇ°Á½Î»
+               //ÒòÎªÃ¿Ò»²¿·Ö¶¼²»ÄÜ³¬¹ı¶şÎ»Êı
+               strncpy(buf_Part6,token,2);
+            }
+            else //ÕÒ²»µ½µÚÁù²¿·Ö×Ö·û´®
+            {
+               return 0;
+            }
+
+            //»ñÈ¡µÚÆß²¿·ÖµÄ×Ö·û´®
+            token = strtok(NULL,s);
+            //°´ÕÕÃüÁîµÄ¸ñÊ½£¬²»Ó¦¸ÃÓĞµÚÆß²¿·Ö¡£
+            if(token != NULL) return 0;
+
+        }
+        //-mµÄºóÒ»Î»²»ÊÇ'¿Õ¸ñ' ·µ»Ø0.
+        else
+        {
+            return 0;
+        }
+
+
+       /*
+        * ²ğÉ¢µÄÁù¸ö²¿·Ö£¬½øĞĞÓï·¨¼ì²é
+        *
+        */
+       //»ñÈ¡Ã¿Ò»²¿·ÖµÄ×Ö·û´®³¤¶È.
+       int length[6] = {0}; 
+        
+       length[0] = strlen(buf_Part1);
+       length[1] = strlen(buf_Part2);
+       length[2] = strlen(buf_Part3);
+       length[3] = strlen(buf_Part4);
+       length[4] = strlen(buf_Part5);
+       length[5] = strlen(buf_Part6);
+
+       //×Ö·û´®µÄ³¤¶È = ºÏ·¨×Ö·û´®µÄ³¤¶È£¬Ö¤Ã÷Óï·¨Ã»ÓĞÎÊÌâ
+       //MAC AddressÏŞ¶¨ÔÚ"1234567890ABCDEF"
+       if(length[0] == strspn(buf_Part1,"1234567890ABCDEF") &&
+          length[1] == strspn(buf_Part2,"1234567890ABCDEF") &&
+          length[2] == strspn(buf_Part3,"1234567890ABCDEF") &&
+          length[3] == strspn(buf_Part4,"1234567890ABCDEF") &&
+          length[4] == strspn(buf_Part5,"1234567890ABCDEF") &&
+          length[5] == strspn(buf_Part6,"1234567890ABCDEF"))
+       //ÓïÑÔÕıÈ·£¬ÃüÁî´æ·Åµ½½á¹¹Ìå
+       {
+            
+            memcpy(network_Setting->part1_MAC_Address,buf_Part1,3);
+            memcpy(network_Setting->part2_MAC_Address,buf_Part2,3);
+            memcpy(network_Setting->part3_MAC_Address,buf_Part3,3);
+            memcpy(network_Setting->part4_MAC_Address,buf_Part4,3);
+            memcpy(network_Setting->part5_MAC_Address,buf_Part5,3);
+            memcpy(network_Setting->part6_MAC_Address,buf_Part6,3);
+            return 1;
+       }
+       //Óï·¨ÓĞÎÊÌâ£¬Ö´ĞĞÊ§°Ü
+       else
+       {
+            return 0;
+       }
+    }
+
+
+
+
+    
+    //Ã»ÓĞÆ¥Åäµ½-i -g -s -mÃüÁî,Ö´ĞĞÊ§°Ü
+    return 0; 
+}
+
+
+/*
+funtion:
+    ½âÎö´®¿Ú·¢ËÍ¹ıÀ´µÄÃüÁî
+   
+input: ×Ö·û´®(char *)
+
+output:
+
+note: ²»Ê¹ÓÃint8_t£¬ÊÇÒòÎªstrcpyµÈC¹Ù·½¿â´¦Àíint8_t»á¾¯¸æ
+      ²éÁËstm32±äÁ¿ÀàĞÍ£¬int8_tÊµ¼ÊÊÇtypedef signed charÀàĞÍ£¬¼´charÀàĞÍ
+*/
+void analyze_User_Command(char const *Command)
+{
+    char *ans ;
+    char new_Command[40] = {0};
+    //²éÕÒ×Ö·û¡®-¡¯
+    ans = strchr(Command,'-');
+    //ÕÒµ½×Ö·û¡®-¡¯
+    if(ans != NULL)
+    {
+        //¶ªµô×Ö·û'-'Ö®Ç°µÄ×Ö·û£¬ÌáÈ¡×Ö·û¡®-¡¯ºÍ×Ö·û¡®-¡¯Ö®ºóµÄ×Ö·û
+        strcpy(new_Command,ans);
+
+        //·ÖÎönew_Command
+        switch (new_Command[1])
+        {
+        case 'h':
+            //·¢ËÍÌáÊ¾ĞÅÏ¢
+            HAL_UART_Transmit_IT(&huart1, (uint8_t *)aTxMessage, sizeof(aTxMessage));
+            break;
+        
+        case 'i':
+        case 'm':
+        case 's':
+        case 'g':
+            //½âÎöÃüÁî
+            if( 1 == excute_Command(new_Command,p_string_Buffer_For_Network_Setting))
+            {
+                //½âÎö³É¹¦
+                //½«×Ö·û´®×ª»»ÎªÕûĞÎ
+                Command_Turn_To_Value(new_Command,p_string_Buffer_For_Network_Setting,w5100_Network_Settings);
+                //Ğ´ÈëIPµØÖ·µ½EEPROM                
+            }
+            break; 
+        case 'p':
+            //´òÓ¡W5100ÍøÂçÉèÖÃ
+            show_W5100_Default_Network_Settings();
+            break;
+            
+        default:
+            //ÌáÊ¾´íÎóĞÅÏ¢
+            //ÏÈÓÃprintfµ÷ÊÔ£¬ºóĞø¸ÄÎªDMA·¢ËÍ£¬Ìá¸ßĞ§ÂÊ
+            printf("Type wrong command ,please type -h to show the command list.");
+            break; //ÕâÀï²»¼ÓbreakµÄ»°£¬IAR±àÒëÆ÷»á¾¯¸æ.
+        }
+        
+    }
+    //Ã»ÓĞÕÒµ½×Ö·û¡®-¡¯
+    else
+    {
+        printf("Something wrong,Di you type '-'? \r\n");
+        printf("If you need some help , plese type -h");
+    }
+}
 
 
 

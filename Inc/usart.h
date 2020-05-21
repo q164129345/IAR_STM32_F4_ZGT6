@@ -30,14 +30,13 @@
 #include "stdint.h"
 #include "stdlib.h"
 #include "string.h"
-
+#include "shell.h"
 #define BUFFER_SIZE (255)
 /* USER CODE END Includes */
 
 extern UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN Private defines */
-extern uint8_t hello[];
 //extern uint8_t recv_buf[13];
 /* USER CODE END Private defines */
 

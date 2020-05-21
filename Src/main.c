@@ -34,7 +34,7 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "string.h"
-#include "stddef.h"
+#include "stdbool.h"
 #include "shell.h"
 #include "net_reg.h"
 /* USER CODE END Includes */
@@ -56,36 +56,15 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-uint8_t aTxMessage[] = "\r\n************* Easy Shell *************\r\n"
-                       "Help Information: \r\n"
-                       "-h    Show the help information \r\n"
-                       "      for example: >>-h \r\n"
-                       "\r\n"
-                       "-i    Set IP address \r\n"
-                       "      for example: >>-i 192.168.178.59 \r\n"
-                       "\r\n"
-                       "-m    Set MAC address  \r\n"
-                       "      for example: >>-m 94:75:CE:2A:13:75 \r\n"
-                       "\r\n"
-                       "-s    Set subnet mask  \r\n"
-                       "      for examlpe: >>-s 255.255.240.0 \r\n"
-                       "\r\n"
-                       "-g    Set Gateway IP address \r\n"
-                       "      for example: >>-g 10.10.10.10 \r\n"
-                       "\r\n"
-                       "-p    Print the network configuration \r\n"
-                       "      for example: >>-p \r\n";
 
-//测试代码
-uint8_t hello[] = "USART1 is ready...\r\n";
-//测试代码
-uint8_t recv_buf[13] = {0};
 //声明外部变量
-extern uint8_t receive_Buff[255];
+extern uint8_t aTxMessage[1024];
+extern int8_t receive_Buff[255];
+//测试代码
+char test[] = " adfafaff -h 192.168.178.109";
 
-
-//uint8_t aTxMessage1[] = "1.Getting the detail about network configuration.\r\n";
-//uint8_t aTxMessage2[] = "2.Setting the network configuration. \r\n";
+//char test1[50] = {0};
+//char *ans;
 
 /* USER CODE END PV */
 
@@ -139,8 +118,6 @@ int main(void)
   MX_NVIC_Init();
   /* USER CODE BEGIN 2 */
   
-  //开启串口中断接收
-  //HAL_UART_Receive_IT(&huart1, (uint8_t *)recv_buf, sizeof(recv_buf));
   //发送提示信息
   HAL_UART_Transmit_IT(&huart1, (uint8_t *)aTxMessage, sizeof(aTxMessage));
   //使能定时器3中断
@@ -149,7 +126,7 @@ int main(void)
   delay_init(168);
   //使能串口空闲中断
   __HAL_UART_ENABLE_IT(&huart1,UART_IT_IDLE);
-  //连接DMA
+  //串口1的DMA连接到接收缓冲区receive_Buff
   HAL_UART_Receive_DMA(&huart1, (uint8_t *)receive_Buff,255);
   
   /* USER CODE END 2 */
@@ -164,9 +141,14 @@ int main(void)
     LED1_Toggle;
     //show_Shell_Title();
     //show_W5100_Default_Network_Settings();
-    delay_ms(100);
+    /*
+    ans = strchr(test,'-');
+    strcpy(test1,ans);
+    printf("The string is : %s \r\n",test1);
+    */
+    //analyze_User_Command(test);
+    delay_ms(500);
     //do_something();
-    
     //喂狗
     HAL_IWDG_Refresh(&hiwdg);  
   }
@@ -236,11 +218,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef * huart)
     /* NOTE: This function should not be modified, when the callback is needed,
              the HAL_UART_RxCpltCallback could be implemented in the user file
     */
-    //HAL_UART_Transmit_IT(&huart1,(uint8_t *)recv_buf,13);
-    //HAL_UART_Receive_IT(&huart1, (uint8_t *)recv_buf,13);
-
 }
-
 
 /* USER CODE END 4 */
 

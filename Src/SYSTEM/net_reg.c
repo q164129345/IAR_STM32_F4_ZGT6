@@ -19,7 +19,7 @@ uint8_t w5100_Network_Settings[W5100_NETWORK_SETTING_SIZE] =
 {
     0,0,0,0,   //Gateway IP
     0,0,0,0,   //Subnet Mask
-    0,0,0,0,   //MAC address
+    0,0,0,0,0,0,   //MAC address
     0,0,0,0,   //Ip Address
 };
 
