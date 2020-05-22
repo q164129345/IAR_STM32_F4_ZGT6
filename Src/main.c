@@ -37,6 +37,7 @@
 #include "stdbool.h"
 #include "shell.h"
 #include "net_reg.h"
+#include "f4_flash.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/

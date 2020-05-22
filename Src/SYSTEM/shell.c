@@ -5,7 +5,7 @@
 
 
 #include "shell.h"
-
+#include "f4_flash.h"
 //声明外部变量
 extern uint8_t w5100_Network_Settings[];
 
@@ -42,6 +42,14 @@ _STRING_FORMAT_NETWORK_SETTINGS *p_string_Buffer_For_Network_Setting = &string_B
 
 //用于查看某些值
 char checknumber[30] = {0};
+
+
+const uint8_t TEXT_Buffer[] = {"STM32 FLASH TEST"};
+uint8_t Read_TEXT_Buffer[20] = {0};
+#define TEXT_LENTH sizeof(TEXT_Buffer)  //长度
+#define SIZE TEXT_LENTH/4+((TEXT_LENTH%4)?1:0) //这个可以保证字符串的长度一定能被4整数
+
+#define FLASH_SAVE_ADDR ADDR_FLASH_SECTOR_9   //烧写扇区9
 
 
 /*
@@ -623,6 +631,7 @@ void analyze_User_Command(char const *Command)
         case 'h':
             //发送提示信息
             HAL_UART_Transmit_IT(&huart1, (uint8_t *)aTxMessage, sizeof(aTxMessage));
+            STMFLASH_Write(FLASH_SAVE_ADDR,(uint32_t*)TEXT_Buffer,SIZE);
             break;
         
         case 'i':
@@ -640,7 +649,9 @@ void analyze_User_Command(char const *Command)
             break; 
         case 'p':
             //打印W5100网络设置
-            show_W5100_Default_Network_Settings();
+            //show_W5100_Default_Network_Settings();
+            STMFLASH_Read(FLASH_SAVE_ADDR,(uint32_t*)Read_TEXT_Buffer,SIZE);
+            printf("%s",Read_TEXT_Buffer);
             break;
             
         default:

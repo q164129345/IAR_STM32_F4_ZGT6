@@ -1180,10 +1180,10 @@
                 <name>$PROJ_DIR$\..\Inc\SYSTEM\delay.h</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\Src\SYSTEM\eeprom.c</name>
+                <name>$PROJ_DIR$\..\Src\SYSTEM\f4_flash.c</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\Inc\SYSTEM\eeprom.h</name>
+                <name>$PROJ_DIR$\..\Inc\SYSTEM\f4_flash.h</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\Src\SYSTEM\net_reg.c</name>

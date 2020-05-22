@@ -4,13 +4,15 @@
 
 #include "main.h"
 #include "usart.h"
-#include "eeprom.h"
 #include "net_reg.h"
 #include "stdlib.h"
 #include "string.h"
 #include "stdio.h"
 #include "ctype.h"
 
+//宏定义
+#define ANALYSIS_SUCCESS 0x01U
+#define ANALYSIS_ERROR   0x00U
 
 
 /* 用于存放字符串形式的网络配置 */
@@ -43,12 +45,13 @@ typedef struct format_network_settings
 
 }_STRING_FORMAT_NETWORK_SETTINGS;
 
+//静态函数（本地函数）
 static void show_W5100_Default_Network_Settings(void);
 static int8_t excute_Command(char const *Command, _STRING_FORMAT_NETWORK_SETTINGS *network_Setting);
 static int8_t Command_Turn_To_Value(char const *Command, _STRING_FORMAT_NETWORK_SETTINGS *string_Network_Setting ,uint8_t *value_Network_Setting);
 
+//对外函数
 int HexStr2Integer( char * HexStr );
-
 void analyze_User_Command(char const *Command);
 
 

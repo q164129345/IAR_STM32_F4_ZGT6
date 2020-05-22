@@ -1,5 +1,5 @@
 #include "net_reg.h"
-
+#include "f4_flash.h"
 /* Ä¬ÈÏµÄÍøÂçÅäÖÃ */
 uint8_t w5100_Default_Network_Settings[W5100_NETWORK_SETTING_SIZE] = 
 {
