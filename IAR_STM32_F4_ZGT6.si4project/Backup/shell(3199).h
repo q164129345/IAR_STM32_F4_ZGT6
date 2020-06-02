@@ -13,9 +13,6 @@
 //宏定义
 #define ANALYSIS_SUCCESS 0x01U
 #define ANALYSIS_ERROR   0x00U
-//用于excute_Command与analyze_User_Command函数的return
-#define SHELL_OK         0x01U
-#define SHELL_NO_OK      0x00U
 
 
 /* 用于存放字符串形式的网络配置 */
