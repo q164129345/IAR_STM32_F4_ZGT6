@@ -2,10 +2,11 @@
 #include "w5100_reg.h"
 #include "net_reg.h"
 
-#define gSn_RX_MASK 0x7ff
-#define gSn_TX_MASK gSn_RX_MASK
-#define gS0_RX_BASE 0x6000
-#define gS0_TX_BASE 0x4000
+/* Buffer for get the socket from TCP */
+/* Global variables are easy to observe through debug */
+uint8_t packet_Buffer_For_Tcp_1[PACKET_BUFFER_LEN];
+uint8_t packet_Buffer_For_Tcp_2[PACKET_BUFFER_LEN];
+
 
 void tcp_Socket(uint8_t socket, uint16_t sport)
 {
@@ -142,6 +143,21 @@ void tcp_Write_u8(uint8_t socket, uint8_t val)
 {
     tcp_Write(socket, &val, 1);
 }
+
+
+void analyze_Tcp_Message(socket_NumberTypeDef socket_Number , uint8_t *packet_Buffer)
+{
+    /* Get the Tcp packet size */
+    uint16_t rx_bytes = get_Tcp_Packet(socket_Number,NULL,packet_Buffer,PACKET_BUFFER_LEN);
+
+    
+    
+    
+
+}
+
+
+
 
 
 
