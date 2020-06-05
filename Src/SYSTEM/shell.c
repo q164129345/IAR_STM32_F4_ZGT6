@@ -436,7 +436,8 @@ static int8_t excute_Command(char const *Command, _STRING_FORMAT_NETWORK_SETTING
         char buf_Part3[3] = {0};
         char buf_Part4[3] = {0};
         char buf_Part5[3] = {0};
-        char buf_Part6[3] = {0};
+        char buf_Part6[3] = {0
+};
 
         //CommandµÄÄÚÈÝÈç:"-m CF:D9:F4:AA:D1:7A"
 

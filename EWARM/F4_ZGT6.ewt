@@ -1164,6 +1164,9 @@
             <file>
                 <name>$PROJ_DIR$\..\Inc\BSP\LED.h</name>
             </file>
+            <file>
+                <name>$PROJ_DIR$\..\Inc\BSP\w5100_reg.h</name>
+            </file>
         </group>
         <group>
             <name>EWARM</name>
@@ -1196,6 +1199,18 @@
             </file>
             <file>
                 <name>$PROJ_DIR$\..\Inc\SYSTEM\shell.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Src\SYSTEM\socket_tcp.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Inc\SYSTEM\socket_tcp.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Inc\SYSTEM\socket_udp.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Src\SYSTEM\socket_upd.c</name>
             </file>
         </group>
         <group>
