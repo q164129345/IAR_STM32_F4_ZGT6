@@ -1,11 +1,13 @@
-#ifndef _SOCKET_UDP_H_
-#define _SOCKET_UDP_H_
+#ifndef __SOCKET_UDP_H__
+#define __SOCKET_UDP_H__
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 #include <stdint.h>
+#include <string.h>
+#include <stdlib.h>
 #include "main.h"
 
 uint16_t get_Udp_Packet(

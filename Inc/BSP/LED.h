@@ -1,5 +1,5 @@
-#ifndef _LED_H
-#define _LED_H
+#ifndef __LED_H__
+#define __LED_H__
 
 
 #define LED0(n)     (n?HAL_GPIO_WritePin(GPIOF,GPIO_PIN_9,GPIO_PIN_SET):HAL_GPIO_WritePin(GPIOF,GPIO_PIN_9,GPIO_PIN_RESET))

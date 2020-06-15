@@ -1165,6 +1165,12 @@
                 <name>$PROJ_DIR$\..\Inc\BSP\LED.h</name>
             </file>
             <file>
+                <name>$PROJ_DIR$\..\Src\BSP\VTS_Protocol.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Inc\BSP\VTS_Protocol.h</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\..\Inc\BSP\w5100_reg.h</name>
             </file>
         </group>

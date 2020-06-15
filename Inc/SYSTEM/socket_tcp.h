@@ -1,11 +1,13 @@
-#ifndef _SOCKET_TCP_H_
-#define _SOCKET_TCP_H_
+#ifndef __SOCKET_TCP_H__
+#define __SOCKET_TCP_H__
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 #include <stdint.h>
+#include <string.h>
+#include <stdlib.h>
 #include "main.h"
 
 #define gSn_RX_MASK 0x7ff
@@ -13,16 +15,13 @@ extern "C" {
 #define gS0_RX_BASE 0x6000
 #define gS0_TX_BASE 0x4000
 
+/* only use socket0 and socket1 */
+#define SOCKET_0 0
+#define SOCKET_1 1
 
 //Packet_Buffer,the maximum length
 #define PACKET_BUFFER_LEN 0x800
 
-
-typedef enum _socket_NumberTypeDef
-{
-    SOCKET_0 = 0 ,   /* only use socket0 and socket1 */
-    SOCKET_1 = 1 
-}socket_NumberTypeDef;
 
 
 void tcp_Socket(uint8_t socket, uint16_t sport);
@@ -36,7 +35,6 @@ uint16_t get_Tcp_Packet(
         uint8_t * packet,   /* TCP payload */
         int       max_bytes /* size of packet[] buffer (this function discards excess data) */
         );
-void analyze_Tcp_Message(socket_NumberTypeDef socket_Number , uint8_t *packet_Buffer);
 
 
 

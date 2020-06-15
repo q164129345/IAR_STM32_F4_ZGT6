@@ -1,5 +1,5 @@
-#ifndef _DELAY_H
-#define _DELAY_H
+#ifndef __DELAY_H__
+#define __DELAY_H__
 
 #include "stm32f4xx.h"
 #include "stm32f4xx_hal.h"

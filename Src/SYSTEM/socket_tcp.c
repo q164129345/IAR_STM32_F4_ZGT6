@@ -145,45 +145,4 @@ void tcp_Write_u8(uint8_t socket, uint8_t val)
 }
 
 
-void analyze_Tcp_Message(socket_NumberTypeDef socket_Number , uint8_t *packet_Buffer)
-{
-    /* Get the Tcp packet size */
-    uint16_t rx_bytes = get_Tcp_Packet(socket_Number,NULL,packet_Buffer,PACKET_BUFFER_LEN);
-
-    
-    
-    
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

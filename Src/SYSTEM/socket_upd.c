@@ -1,4 +1,3 @@
-#include "stdint.h"
 #include "socket_udp.h"
 #include "w5100_reg.h"
 #include "net_reg.h"

@@ -1,5 +1,5 @@
 #ifndef _W5100_REG_H
-#define _W5100_REG_H
+#define __W5100_REG_H__
 
 
 /* 

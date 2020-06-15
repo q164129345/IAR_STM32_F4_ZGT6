@@ -1,5 +1,5 @@
-#ifndef _NETWORK_RESET_HANDLER_H_
-#define _NETWORK_RESET_HANDLER_H_
+#ifndef __NETWORK_RESET_HANDLER_H__
+#define __NETWORK_RESET_HANDLER_H__
 
 #ifdef __cplusplus
 extern "C" {

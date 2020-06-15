@@ -1,14 +1,13 @@
-#ifndef _SHELL_H
-#define _SHELL_H
+#ifndef __SHELL_H__
+#define __SHELL_H__
 
-
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <ctype.h>
 #include "main.h"
 #include "usart.h"
 #include "net_reg.h"
-#include "stdlib.h"
-#include "string.h"
-#include "stdio.h"
-#include "ctype.h"
 
 //∫Í∂®“Â
 #define ANALYSIS_SUCCESS 0x01U

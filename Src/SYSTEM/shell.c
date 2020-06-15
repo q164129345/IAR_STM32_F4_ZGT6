@@ -650,8 +650,8 @@ void analyze_User_Command(char const *Command)
             break; 
         case 'p':
             //¥Ú”°W5100Õ¯¬Á…Ë÷√
-            //show_W5100_Default_Network_Settings();
-            STMFLASH_Read(FLASH_SAVE_ADDR,(uint32_t*)Read_TEXT_Buffer,SIZE);
+            show_W5100_Default_Network_Settings();
+            //STMFLASH_Read(FLASH_SAVE_ADDR,(uint32_t*)Read_TEXT_Buffer,SIZE);
             printf("%s",Read_TEXT_Buffer);
             break;
             

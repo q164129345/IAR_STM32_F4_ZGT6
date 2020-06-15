@@ -1,5 +1,5 @@
-#ifndef _NET_REG_H_
-#define _NET_REG_H_
+#ifndef __NET_REG_H__
+#define __NET_REG_H__
 
 #ifdef __cplusplus
 extern "C" {

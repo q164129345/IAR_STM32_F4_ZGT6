@@ -16,7 +16,7 @@
         <ShowSource>1</ShowSource>
     </Trace1>
     <DebugChecksum>
-        <Checksum>3099632170</Checksum>
+        <Checksum>2471946471</Checksum>
     </DebugChecksum>
     <CodeCoverage>
         <Enabled>_ 0</Enabled>
@@ -75,6 +75,11 @@
     <array_types>
         <Fmt0>uint8_t[18]	3	0</Fmt0>
     </array_types>
+    <watch_formats>
+        <Fmt0>{W}42:Position	3	0</Fmt0>
+        <Fmt1>{W}42:number_test	3	0</Fmt1>
+        <Fmt2>{W}42:test_Length	3	0</Fmt2>
+    </watch_formats>
     <Trace2>
         <Enabled>0</Enabled>
         <ShowSource>0</ShowSource>

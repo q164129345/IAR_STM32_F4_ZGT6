@@ -29,15 +29,18 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "LED.h"
-#include "delay.h"
-#include "stdio.h"
-#include "stdlib.h"
-#include "string.h"
-#include "stdbool.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
 #include "shell.h"
 #include "net_reg.h"
 #include "f4_flash.h"
+#include "LED.h"
+#include "delay.h"
+#include "VTS_Protocol.h"
+#include "socket_tcp.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -61,10 +64,24 @@
 //声明外部变量
 extern uint8_t aTxMessage[1024];
 extern int8_t receive_Buff[255];
+extern uint8_t packet_Buffer_For_Tcp_1[PACKET_BUFFER_LEN];
+extern uint8_t packet_Buffer_For_Tcp_2[PACKET_BUFFER_LEN];
+
 //测试代码
 
-//char test1[50] = {0};
-//char *ans;
+uint8_t test1[] = "dsafasdfasdf:CL_rotenc_type=30";
+uint8_t test[] = ":CL_rotenc_type=";
+uint8_t test3[] = "";
+
+uint8_t test2[20];
+uint8_t number_test = 0;
+uint8_t test_Length = 0;
+uint8_t s1_length,s2_length;
+char *left = NULL;
+char *right = NULL;
+
+
+
 
 /* USER CODE END PV */
 
@@ -77,6 +94,7 @@ static void MX_NVIC_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
 
 /* USER CODE END 0 */
 
@@ -146,8 +164,13 @@ int main(void)
     strcpy(test1,ans);
     printf("The string is : %s \r\n",test1);
     */
-    //analyze_User_Command(test);
-    delay_ms(500);
+    
+    //测试代码
+    analyze_Tcp_Protocol_Command(SOCKET_0,packet_Buffer_For_Tcp_1);
+    number_test = mystr_find_Right_Side_Index(test1,test);
+    strcpy((char *)test2,(char *)(test1+number_test));
+
+    delay_ms(100);
     //do_something();
     //喂狗
     HAL_IWDG_Refresh(&hiwdg);  

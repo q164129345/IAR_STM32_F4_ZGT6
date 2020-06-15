@@ -1,5 +1,5 @@
-#ifndef _F4_FLASH_H
-#define _F4_FLASH_H
+#ifndef __F4_FLASH_H__
+#define __F4_FLASH_H__
 
 #include "main.h"
 
